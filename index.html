@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crime and Punishment - Audiobook Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <meta name="description" content="Track your progress through Crime and Punishment audiobook with bookmarks and notes">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Crime and Punishment</h1>
+            <p class="subtitle">by Fyodor Dostoyevsky</p>
+            <p class="description">Track your listening progress through this classic novel</p>
+            <div class="status-indicator" id="status-indicator">
+                <span class="status-dot"></span>
+                <span class="status-text">Ready to listen</span>
+            </div>
+        </header>
+
+        <!-- Audio Player Section -->
+        <div class="audio-player-section">
+            <h3>🎵 Audio Player</h3>
+            <div class="audio-player">
+                <div class="player-info">
+                    <span id="current-track">Select a part to start listening</span>
+                    <span id="current-time">00:00</span> / <span id="total-time">00:00</span>
+                </div>
+                <div class="player-controls">
+                    <button id="play-pause-btn" class="btn btn-primary" onclick="togglePlayPause()" disabled>
+                        ▶️ Play
+                    </button>
+                    <button id="stop-btn" class="btn btn-secondary" onclick="stopAudio()" disabled>
+                        ⏹️ Stop
+                    </button>
+                    <button id="skip-back-btn" class="btn btn-secondary" onclick="skipBack()" disabled>
+                        ⏪ -30s
+                    </button>
+                    <button id="skip-forward-btn" class="btn btn-secondary" onclick="skipForward()" disabled>
+                        ⏩ +30s
+                    </button>
+                    <button id="bookmark-btn" class="btn btn-secondary" onclick="addBookmark()" disabled>
+                        🔖 Bookmark
+                    </button>
+                </div>
+                <div class="audio-progress">
+                    <input type="range" id="audio-progress-slider" class="audio-slider" min="0" max="100" value="0" disabled>
+                </div>
+                <div class="volume-control">
+                    <span>🔊</span>
+                    <input type="range" id="volume-slider" class="volume-slider" min="0" max="100" value="70">
+                </div>
+            </div>
+        </div>
+
+        <div class="audiobook-container">
+            <div class="part" data-part="1">
+                <div class="part-header">
+                    <h2>Part 1</h2>
+                    <span class="duration">~6 hours</span>
+                </div>
+                <div class="progress-section">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-1"></div>
+                    </div>
+                    <div class="progress-info">
+                        <span class="progress-text" id="progress-text-1">0% complete</span>
+                        <span class="time-remaining" id="time-remaining-1">6 hours remaining</span>
+                    </div>
+                </div>
+                <div class="controls">
+                    <input type="range" id="slider-1" class="progress-slider" min="0" max="100" value="0">
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="loadAudio(1)">Play Part 1</button>
+                        <button class="btn btn-secondary" onclick="markComplete(1)">Mark Complete</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="part" data-part="2">
+                <div class="part-header">
+                    <h2>Part 2</h2>
+                    <span class="duration">~6 hours</span>
+                </div>
+                <div class="progress-section">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-2"></div>
+                    </div>
+                    <div class="progress-info">
+                        <span class="progress-text" id="progress-text-2">0% complete</span>
+                        <span class="time-remaining" id="time-remaining-2">6 hours remaining</span>
+                    </div>
+                </div>
+                <div class="controls">
+                    <input type="range" id="slider-2" class="progress-slider" min="0" max="100" value="0">
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="loadAudio(2)">Play Part 2</button>
+                        <button class="btn btn-secondary" onclick="markComplete(2)">Mark Complete</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="part" data-part="3">
+                <div class="part-header">
+                    <h2>Part 3</h2>
+                    <span class="duration">~6 hours</span>
+                </div>
+                <div class="progress-section">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-3"></div>
+                    </div>
+                    <div class="progress-info">
+                        <span class="progress-text" id="progress-text-3">0% complete</span>
+                        <span class="time-remaining" id="time-remaining-3">6 hours remaining</span>
+                    </div>
+                </div>
+                <div class="controls">
+                    <input type="range" id="slider-3" class="progress-slider" min="0" max="100" value="0">
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="loadAudio(3)">Play Part 3</button>
+                        <button class="btn btn-secondary" onclick="markComplete(3)">Mark Complete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="summary">
+            <h3>Overall Progress</h3>
+            <div class="overall-progress">
+                <div class="overall-progress-bar">
+                    <div class="overall-progress-fill" id="overall-progress-fill"></div>
+                </div>
+                <span class="overall-progress-text" id="overall-progress-text">0% of the entire book completed</span>
+            </div>
+        </div>
+
+        <!-- Bookmarks Section -->
+        <div class="bookmarks-section">
+            <h3>🔖 Bookmarks</h3>
+            <p class="bookmarks-description">Mark important moments in the story to easily return to them later.</p>
+            <div id="bookmarks-container" class="bookmarks-container">
+                <div class="empty-state" id="empty-bookmarks">
+                    <span>📚 No bookmarks yet</span>
+                    <p>Add bookmarks while listening to mark important moments</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="notes-section">
+            <h3>Notes</h3>
+            <textarea id="notes" placeholder="Add your thoughts, questions, or notes about the book here..."></textarea>
+            <button class="btn btn-secondary" onclick="saveNotes()">Save Notes</button>
+        </div>
+
+        <footer>
+            <p>Keyboard shortcuts: Space (play/pause), ← → (skip), Ctrl+B (bookmark), Ctrl+S (save notes)</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
